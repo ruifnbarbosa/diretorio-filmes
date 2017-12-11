@@ -1,20 +1,30 @@
 package com.example.a029265.diretorio_filmes;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.Comunicar;
+import com.example.a029265.diretorio_filmes.ClassesAssistentes.Pesquisa;
+import com.example.a029265.diretorio_filmes.ClassesAssistentes.PesquisaHandler;
+import com.example.a029265.diretorio_filmes.ClassesAssistentes.SaxXmlParser;
+
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
     protected AsyncGenerator backgroundTask;
     protected EditText campoPesquisa;
     protected Button botaoPesquisar, botaoFavoritos, botaobotaoVerMaisTarde;
+    protected ArrayList<Pesquisa> listaPesquisa;
+
+    protected Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +41,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        activity = this;
 
         botaoPesquisar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +71,21 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+            listaPesquisa = null;
+            try {
+                SaxXmlParser<Pesquisa, PesquisaHandler> parser = new SaxXmlParser<Pesquisa, PesquisaHandler>();
+                parser.setHandler(new PesquisaHandler());
+                listaPesquisa = (ArrayList<Pesquisa>) parser.parse(new StringReader(s));
+
+                Intent intent = new Intent(activity, Resultados.class);
+                Bundle args = new Bundle();
+                args.putSerializable("pesquisa", (Serializable) listaPesquisa);
+                intent.putExtra("pesquisaBundle", args);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
 }
