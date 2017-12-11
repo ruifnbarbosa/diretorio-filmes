@@ -1,4 +1,4 @@
-package com.example.a029265.diretorio_filmes;
+package com.example.a029265.diretorio_filmes.ClassesAssistentes;
 
 import android.util.Base64;
 

@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.a029265.diretorio_filmes.ClassesAssistentes.Comunicar;
+
 public class MainActivity extends Activity {
 
     protected AsyncGenerator backgroundTask;
