@@ -31,6 +31,6 @@ public class Pesquisa implements Serializable {
 
     @Override
     public String toString() {
-        return id + ": " + nome;
+        return nome;
     }
 }
