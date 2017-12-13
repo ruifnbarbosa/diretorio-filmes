@@ -15,10 +15,11 @@ public class AjudaUsoBaseDados extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String s = "CREATE TABLE filmes(_id varchar(20) primary key autoincrement, nome varchar(80), pontuacao varchar(10), estado integer)";
+        String s = "CREATE TABLE filmes(_id INTEGER primary key autoincrement, id_filme varchar(40), nomeFilme varchar(80), pontuacao varchar(10), estado integer);";
         sqLiteDatabase.execSQL(s);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    }
 }
