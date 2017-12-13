@@ -1,10 +1,8 @@
 17877af9
 
-procurar filmes
 Adicionar filmes á db com pontuação
 Adicionar filmes para ver mais tarde
 
-Todos resultados da pesquisa - Envia da Main Page para a pagina Resultados (Adicionar ListActivity)
-Filme
+Filme - Adicionar os favoritos e ver mais tarde
 Favoritos
 Ver mais tarde
