@@ -72,8 +72,16 @@ public class AdaptadorBaseDados {
         return database.rawQuery(QUERY, new String[]{filme});
     }
 
-    public boolean existe(String idFilme) {
-        final String QUERY = "SELECT nomeFilme FROM filmes where id_filme=?;";
+    public boolean existeFavoritos(String idFilme) {
+        final String QUERY = "SELECT id_filme FROM filmes where id_filme=? AND estado=1;";
+        Cursor cursor = database.rawQuery(QUERY, new String[]{idFilme});
+        boolean b = cursor.getCount() >= 1;
+        cursor.close();
+        return b;
+    }
+
+    public boolean existeMaisTarde(String idFilme) {
+        final String QUERY = "SELECT id_filme FROM filmes where id_filme=? AND estado=2;";
         Cursor cursor = database.rawQuery(QUERY, new String[]{idFilme});
         boolean b = cursor.getCount() >= 1;
         cursor.close();

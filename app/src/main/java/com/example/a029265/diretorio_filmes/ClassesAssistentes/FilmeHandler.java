@@ -32,7 +32,7 @@ public class FilmeHandler extends MyXmlListHandler<TipoFilme> {
             tempFilme.setPosterUrl(attributes.getValue(13));
             tempFilme.setActores(attributes.getValue(8));
             tempFilme.setAno(Integer.parseInt(attributes.getValue(1)));
-            tempFilme.setPontuacao(Float.parseFloat(attributes.getValue(15)));
+            tempFilme.setPontuacao(attributes.getValue(15));
         }
     }
 

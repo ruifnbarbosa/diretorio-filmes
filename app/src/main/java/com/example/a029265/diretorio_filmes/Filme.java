@@ -6,9 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.a029265.diretorio_filmes.ClassesAssistentes.AdaptadorBaseDados;
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.Comunicar;
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.FilmeHandler;
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.SaxXmlParser;
@@ -28,6 +33,10 @@ public class Filme extends Activity {
 
     protected TextView titulo, ano, idade, lancamento, duracao, genero, diretor, sinopse, premios, pontuacao, atores;
     protected ImageView poster;
+    protected Button botaoFavoritos, botaoVerMaisTarde;
+    protected Activity activity;
+
+    protected AdaptadorBaseDados adaptadorBaseDados;
 
     //tt1596343
     //http://www.omdbapi.com/?i=tt1596343&r=xml
@@ -49,6 +58,9 @@ public class Filme extends Activity {
         poster = findViewById(R.id.poster);
         pontuacao = findViewById(R.id.pontuacao);
         atores = findViewById(R.id.actores);
+
+        botaoFavoritos = findViewById(R.id.adicionarFavoritos);
+        botaoVerMaisTarde = findViewById(R.id.botaoVerMaisTarde);
     }
 
     @Override
@@ -56,9 +68,17 @@ public class Filme extends Activity {
         super.onStart();
         intent = getIntent();
         id = intent.getStringExtra("idFilme");
+        activity = this;
 
         backgroundTask = new AsyncGenerator("omdbapi.com", "/?i=" + id + "&r=xml&apikey=17877af9", 80);
         backgroundTask.execute();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adaptadorBaseDados.close();
     }
 
     private class AsyncGenerator extends AsyncTask<Void, Void, String> {
@@ -84,19 +104,51 @@ public class Filme extends Activity {
                 SaxXmlParser<TipoFilme, FilmeHandler> parser = new SaxXmlParser<TipoFilme, FilmeHandler>();
                 parser.setHandler(new FilmeHandler());
                 filmeList = (ArrayList<TipoFilme>) parser.parse(new StringReader(s));
-                TipoFilme filme = filmeList.get(0);
-                new DownloadImage(poster).execute(filme.getPosterUrl());
-                titulo.setText(filme.getTitulo());
-                ano.setText("" + filme.getAno());
-                idade.setText(filme.getIdade());
-                lancamento.setText(filme.getLancamento());
-                duracao.setText(filme.getDuracao());
-                genero.setText(filme.getGenero());
-                diretor.setText(filme.getDiretor());
-                sinopse.setText(filme.getSinopse());
-                premios.setText(filme.getPremios());
-                pontuacao.setText("" + filme.getPontuacao());
-                atores.setText(filme.getActores());
+                new DownloadImage(poster).execute(filmeList.get(0).getPosterUrl());
+                titulo.setText(filmeList.get(0).getTitulo());
+                ano.setText("" + filmeList.get(0).getAno());
+                idade.setText(filmeList.get(0).getIdade());
+                lancamento.setText(filmeList.get(0).getLancamento());
+                duracao.setText(filmeList.get(0).getDuracao());
+                genero.setText(filmeList.get(0).getGenero());
+                diretor.setText(filmeList.get(0).getDiretor());
+                sinopse.setText(filmeList.get(0).getSinopse());
+                premios.setText(filmeList.get(0).getPremios());
+                pontuacao.setText("" + filmeList.get(0).getPontuacao());
+                atores.setText(filmeList.get(0).getActores());
+
+                SystemClock.sleep(2);
+
+                adaptadorBaseDados = new AdaptadorBaseDados(activity).open();
+
+                if (adaptadorBaseDados.existeFavoritos(filmeList.get(0).getIdFilme())) {
+                    botaoFavoritos.setText("Já adicionado aos Favoritos");
+                    botaoFavoritos.setEnabled(false);
+                } else {
+                    botaoFavoritos.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            adaptadorBaseDados.inserirBaseDados(filmeList.get(0).getIdFilme(), filmeList.get(0).getTitulo(), filmeList.get(0).getPontuacao(), 1);
+                            botaoFavoritos.setText("Já adicionado aos Favoritos");
+                            botaoFavoritos.setEnabled(false);
+                        }
+                    });
+                }
+
+                if (adaptadorBaseDados.existeMaisTarde(filmeList.get(0).getIdFilme())) {
+                    botaoVerMaisTarde.setText("Já adicionado á Lista");
+                    botaoVerMaisTarde.setEnabled(false);
+                } else {
+                    botaoVerMaisTarde.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            adaptadorBaseDados.inserirBaseDados(filmeList.get(0).getIdFilme(), filmeList.get(0).getTitulo(), filmeList.get(0).getPontuacao(), 2);
+                            botaoVerMaisTarde.setText("Já adicionado á Lista");
+                            botaoVerMaisTarde.setEnabled(false);
+                        }
+                    });
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

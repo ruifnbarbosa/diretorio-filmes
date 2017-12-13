@@ -27,10 +27,6 @@ public class MainActivity extends Activity {
     protected ArrayList<Pesquisa> listaPesquisa;
     protected Activity activity;
 
-    protected AdaptadorBaseDados a;
-    protected List<Integer> id, estado;
-    protected List<String> idFilme, nomeFilme, pontuacao;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,24 +44,6 @@ public class MainActivity extends Activity {
         super.onStart();
 
         activity = this;
-
-        /*a = new AdaptadorBaseDados(this).open();
-
-        id = new ArrayList<Integer>();
-        estado = new ArrayList<Integer>();
-        idFilme = new ArrayList<String>();
-        nomeFilme = new ArrayList<String>();
-        pontuacao = new ArrayList<String>();
-        a.obterFavoritos(id, idFilme, nomeFilme, pontuacao, estado);
-
-        if (a.existe("filme4")) {
-            Toast.makeText(activity, "Existe " + id.size(), Toast.LENGTH_SHORT).show();
-        } else {
-            a.inserirBaseDados("filme4", "Filme4", "7.0", 1);
-            Toast.makeText(activity, "Inseriu " + id.size(), Toast.LENGTH_SHORT).show();
-        }
-
-        a.close();*/
 
         botaoPesquisar.setOnClickListener(new View.OnClickListener() {
             @Override

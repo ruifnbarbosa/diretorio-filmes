@@ -2,9 +2,8 @@ package com.example.a029265.diretorio_filmes.ClassesAssistentes;
 
 public class TipoFilme {
 
-    protected String idFilme, titulo, idade, lancamento, duracao, genero, diretor, sinopse, premios, posterUrl, actores;
+    protected String idFilme, titulo, idade, lancamento, duracao, genero, diretor, sinopse, premios, posterUrl, actores, pontuacao;
     protected int ano;
-    protected float pontuacao;
 
     public TipoFilme(String idFilme) {
         this.idFilme = idFilme;
@@ -110,11 +109,11 @@ public class TipoFilme {
         this.ano = ano;
     }
 
-    public float getPontuacao() {
+    public String getPontuacao() {
         return pontuacao;
     }
 
-    public void setPontuacao(float pontuacao) {
+    public void setPontuacao(String pontuacao) {
         this.pontuacao = pontuacao;
     }
 }
