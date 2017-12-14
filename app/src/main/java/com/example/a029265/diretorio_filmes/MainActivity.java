@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.a029265.diretorio_filmes.ClassesAssistentes.AdaptadorBaseDados;
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.Comunicar;
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.Pesquisa;
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.PesquisaHandler;
@@ -17,15 +16,19 @@ import com.example.a029265.diretorio_filmes.ClassesAssistentes.SaxXmlParser;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
 
     protected AsyncGenerator backgroundTask;
     protected EditText campoPesquisa;
-    protected Button botaoPesquisar, botaoFavoritos, botaobotaoVerMaisTarde;
+    protected Button botaoPesquisar, botaoFavoritos, botaoVerMaisTarde;
     protected ArrayList<Pesquisa> listaPesquisa;
     protected Activity activity;
+
+    protected void AbreActivity(Class<?> subActivity) {
+        Intent intent = new Intent(this, subActivity);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class MainActivity extends Activity {
         campoPesquisa = findViewById(R.id.campoPesquisa);
         botaoPesquisar = findViewById(R.id.botaoPesquisar);
         botaoFavoritos = findViewById(R.id.botaoFavoritos);
-        botaobotaoVerMaisTarde = findViewById(R.id.botaoVerMaisTarde);
+        botaoVerMaisTarde = findViewById(R.id.botaoVerMaisTarde);
 
     }
 
@@ -52,6 +55,21 @@ public class MainActivity extends Activity {
                 backgroundTask.execute();
             }
         });
+
+        botaoFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AbreActivity(Favoritos.class);
+            }
+        });
+
+        botaoVerMaisTarde.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AbreActivity(VerMaisTarde.class);
+            }
+        });
+
     }
 
     private class AsyncGenerator extends AsyncTask<Void, Void, String> {

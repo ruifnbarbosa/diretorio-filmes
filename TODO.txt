@@ -1,8 +1,7 @@
 17877af9
 
-Adicionar filmes á db com pontuação
-Adicionar filmes para ver mais tarde
 
 Filme - Adicionar os favoritos e ver mais tarde
+Adicionar filmes para ver mais tarde
 Favoritos
 Ver mais tarde

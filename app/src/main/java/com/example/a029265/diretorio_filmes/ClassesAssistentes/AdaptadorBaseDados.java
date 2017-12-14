@@ -50,7 +50,11 @@ public class AdaptadorBaseDados {
         colunas[3] = "pontuacao";
         colunas[4] = "estado";
 
-        Cursor c = database.query("filmes", colunas, "estado", new String[]{"2"}, null, null, null);
+        final String QUERY = "SELECT * FROM filmes WHERE estado=?;";
+
+        Cursor c = database.rawQuery(QUERY, new String[]{"2"});
+
+        //Cursor c = database.query("filmes", colunas, "estado", new String[]{"2"}, null, null, null);
         if (c.moveToFirst()) {
             do {
                 id.add(c.getInt(0));
@@ -100,6 +104,17 @@ public class AdaptadorBaseDados {
         values.put("pontuacao", pontuacao);
         values.put("estado", estado);
         return database.insert("filmes", null, values);
+    }
+
+    public int updateDados(Integer id, Integer estado, String pontuacao) {
+        String whereCaluse = "_id = ?";
+        String[] whereArgs = new String[1];
+        whereArgs[0] = Integer.valueOf(id).toString();
+        ContentValues values = new ContentValues();
+
+        values.put("estado", estado);
+        values.put("pontuacao", pontuacao);
+        return database.update("filmes", values, whereCaluse, whereArgs);
     }
 
     public void close() {
