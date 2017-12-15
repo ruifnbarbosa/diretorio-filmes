@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.AdaptadorBaseDados;
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.Comunicar;
@@ -33,6 +35,7 @@ public class Filme extends Activity {
     protected TextView titulo, ano, idade, lancamento, duracao, genero, diretor, sinopse, premios, pontuacao, atores;
     protected ImageView poster;
     protected Button botaoFavoritos, botaoVerMaisTarde;
+    protected EditText campoPontuacao;
     protected Activity activity;
 
     protected AdaptadorBaseDados adaptadorBaseDados;
@@ -57,6 +60,7 @@ public class Filme extends Activity {
         poster = findViewById(R.id.poster);
         pontuacao = findViewById(R.id.pontuacao);
         atores = findViewById(R.id.actores);
+        campoPontuacao = findViewById(R.id.campoPontuacao);
 
         botaoFavoritos = findViewById(R.id.adicionarFavoritos);
         botaoVerMaisTarde = findViewById(R.id.botaoVerMaisTarde);
@@ -123,13 +127,16 @@ public class Filme extends Activity {
                 if (adaptadorBaseDados.existeFavoritos(filmeList.get(0).getIdFilme())) {
                     botaoFavoritos.setText("Já adicionado aos Favoritos");
                     botaoFavoritos.setEnabled(false);
+                    botaoVerMaisTarde.setEnabled(false);
                 } else {
                     botaoFavoritos.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            adaptadorBaseDados.inserirBaseDados(filmeList.get(0).getIdFilme(), filmeList.get(0).getTitulo(), filmeList.get(0).getPontuacao(), 1);
+                            Toast.makeText(activity, pontuacao.getText().toString(), Toast.LENGTH_SHORT).show();
+                            adaptadorBaseDados.inserirBaseDados(filmeList.get(0).getIdFilme(), filmeList.get(0).getTitulo(), campoPontuacao.getText().toString(), 1);
                             botaoFavoritos.setText("Já adicionado aos Favoritos");
                             botaoFavoritos.setEnabled(false);
+                            botaoVerMaisTarde.setEnabled(false);
                         }
                     });
                 }
@@ -137,13 +144,15 @@ public class Filme extends Activity {
                 if (adaptadorBaseDados.existeMaisTarde(filmeList.get(0).getIdFilme())) {
                     botaoVerMaisTarde.setText("Já adicionado á Lista");
                     botaoVerMaisTarde.setEnabled(false);
+                    botaoFavoritos.setEnabled(false);
                 } else {
                     botaoVerMaisTarde.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            adaptadorBaseDados.inserirBaseDados(filmeList.get(0).getIdFilme(), filmeList.get(0).getTitulo(), filmeList.get(0).getPontuacao(), 2);
+                            adaptadorBaseDados.inserirBaseDados(filmeList.get(0).getIdFilme(), filmeList.get(0).getTitulo(), campoPontuacao.getText().toString(), 2);
                             botaoVerMaisTarde.setText("Já adicionado á Lista");
                             botaoVerMaisTarde.setEnabled(false);
+                            botaoFavoritos.setEnabled(false);
                         }
                     });
                 }

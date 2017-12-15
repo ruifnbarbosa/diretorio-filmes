@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a029265.diretorio_filmes.ClassesAssistentes.AdaptadorBaseDados;
 
@@ -45,6 +46,10 @@ public class Favoritos extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nomeFilmeArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        if (nomeFilmeArray.size() <= 0) {
+            spinner.setEnabled(false);
+            Toast.makeText(this, "Não existem filmes nos favoritos", Toast.LENGTH_SHORT).show();
+        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

@@ -37,7 +37,7 @@ public class VerMaisTarde extends Activity {
         nomeFilme = findViewById(R.id.nomeFilme);
         tirarMaisTarde = findViewById(R.id.tirarVerMaisTarde);
         spinner = findViewById(R.id.spinner);
-        pontuacao = findViewById(R.id.pontuacao);
+        pontuacao = findViewById(R.id.pontuacaoVerMaisTarde);
 
         id = new ArrayList<Integer>();
         estadoArray = new ArrayList<Integer>();
@@ -52,9 +52,13 @@ public class VerMaisTarde extends Activity {
         adaptadorBaseDados = new AdaptadorBaseDados(this).open();
         adaptadorBaseDados.obterVerMaisTarde(id, idFilmeArray, nomeFilmeArray, pontuacaoArray, estadoArray);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nomeFilmeArray);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nomeFilmeArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        if (nomeFilmeArray.size() <= 0) {
+            spinner.setEnabled(false);
+            Toast.makeText(this, "Não existem filmes guardados para ver mais tarde", Toast.LENGTH_SHORT).show();
+        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -74,8 +78,8 @@ public class VerMaisTarde extends Activity {
                 if (pontuacao.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(VerMaisTarde.this, "Defina uma pontuação", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(VerMaisTarde.this, "Doing", Toast.LENGTH_SHORT).show();
-                    adaptadorBaseDados.updateDados(id.get(index), 2, pontuacaoArray.get(index));
+                    adaptadorBaseDados.updateDados(idFilmeArray.get(index).toString(), "1", pontuacao.getText().toString());
+                    finish();
                 }
             }
         });

@@ -106,10 +106,10 @@ public class AdaptadorBaseDados {
         return database.insert("filmes", null, values);
     }
 
-    public int updateDados(Integer id, Integer estado, String pontuacao) {
-        String whereCaluse = "_id = ?";
+    public int updateDados(String id, String estado, String pontuacao) {
+        String whereCaluse = "id_filme = ?";
         String[] whereArgs = new String[1];
-        whereArgs[0] = Integer.valueOf(id).toString();
+        whereArgs[0] = id;
         ContentValues values = new ContentValues();
 
         values.put("estado", estado);
